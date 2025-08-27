@@ -3,42 +3,42 @@
 
   <!-- الصفحة الرئيسية -->
   <url>
-    <loc>https://example-rep.netlify.app/</loc>
+    <loc>https://video-audio-converter.netlify.app/</loc>
     <lastmod>2025-08-27</lastmod>
     <priority>1.0</priority>
   </url>
 
   <!-- قسم الخصوصية -->
   <url>
-    <loc>https://example-rep.netlify.app/#privacy</loc>
+    <loc>https://video-audio-converter.netlify.app/#privacy</loc>
     <lastmod>2025-08-27</lastmod>
     <priority>0.8</priority>
   </url>
 
   <!-- قسم الشروط -->
   <url>
-    <loc>https://example-rep.netlify.app/#terms</loc>
+    <loc>https://video-audio-converter.netlify.app/#terms</loc>
     <lastmod>2025-08-27</lastmod>
     <priority>0.8</priority>
   </url>
 
   <!-- قسم الدعم -->
   <url>
-    <loc>https://example-rep.netlify.app/#support</loc>
+    <loc>https://video-audio-converter.netlify.app/#support</loc>
     <lastmod>2025-08-27</lastmod>
     <priority>0.7</priority>
   </url>
 
   <!-- قسم المميزات -->
   <url>
-    <loc>https://example-rep.netlify.app/#features</loc>
+    <loc>https://video-audio-converter.netlify.app/#features</loc>
     <lastmod>2025-08-27</lastmod>
     <priority>0.7</priority>
   </url>
 
   <!-- قسم الأسعار -->
   <url>
-    <loc>https://example-rep.netlify.app/#pricing</loc>
+    <loc>https://video-audio-converter.netlify.app/#pricing</loc>
     <lastmod>2025-08-27</lastmod>
     <priority>0.7</priority>
   </url>
