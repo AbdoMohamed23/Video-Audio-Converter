@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "title": "Video & Audio Converter - The Fastest Tool to Convert All Formats",
+    "description": "Convert your video and audio files to all formats easily and quickly while maintaining quality."
+  },
+  "header": {
+    "title": "Video & Audio Converter",
+    "subtitle": "Convert your files easily and quickly"
+  },
+  "upload": {
+    "title": "Drag & drop your files here or click to select",
+    "subtitle": "Supports all video and audio formats",
+    "format": "Choose conversion format:",
+    "progress": "Converting...",
+    "start": "Start Conversion"
+  },
+  "features": {
+    "title": "Service Features",
+    "speed": { "title": "High Speed", "desc": "Fast and efficient conversion for all files" },
+    "security": { "title": "Full Security", "desc": "Complete protection for your files and privacy" },
+    "quality": { "title": "High Quality", "desc": "Maintain the best quality of your files" }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "buy": "Buy Now",
+    "basic": {
+      "title": "Basic Plan",
+      "li1": "Convert up to 10 files",
+      "li2": "File size up to 100MB",
+      "li3": "Basic Support"
+    },
+    "premium": {
+      "title": "Premium Plan",
+      "li1": "Convert up to 50 files",
+      "li2": "File size up to 500MB",
+      "li3": "Advanced Support",
+      "li4": "Priority Conversion"
+    },
+    "pro": {
+      "title": "Professional Plan",
+      "li1": "Unlimited Conversions",
+      "li2": "File size up to 2GB",
+      "li3": "24/7 Support",
+      "li4": "Advanced Features"
+    }
+  },
+  "footer": {
+    "contact": "Contact Us",
+    "whatsapp": "Chat on WhatsApp",
+    "links": "Important Links",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "support": "Support",
+    "copy": "Video & Audio Converter. All Rights Reserved."
+  }
+}

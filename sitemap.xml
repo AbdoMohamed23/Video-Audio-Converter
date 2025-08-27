@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- الصفحة الرئيسية -->
+  <url>
+    <loc>https://example-rep.netlify.app/</loc>
+    <lastmod>2025-08-27</lastmod>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- قسم الخصوصية -->
+  <url>
+    <loc>https://example-rep.netlify.app/#privacy</loc>
+    <lastmod>2025-08-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- قسم الشروط -->
+  <url>
+    <loc>https://example-rep.netlify.app/#terms</loc>
+    <lastmod>2025-08-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- قسم الدعم -->
+  <url>
+    <loc>https://example-rep.netlify.app/#support</loc>
+    <lastmod>2025-08-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- قسم المميزات -->
+  <url>
+    <loc>https://example-rep.netlify.app/#features</loc>
+    <lastmod>2025-08-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- قسم الأسعار -->
+  <url>
+    <loc>https://example-rep.netlify.app/#pricing</loc>
+    <lastmod>2025-08-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>
