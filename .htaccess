@@ -1,66 +1,36 @@
-# Video & Audio Converter - Apache Configuration
-# Performance and SEO optimizations
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
 
-# Enable compression
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/plain
-    AddOutputFilterByType DEFLATE text/html
-    AddOutputFilterByType DEFLATE text/xml
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE application/xml
-    AddOutputFilterByType DEFLATE application/xhtml+xml
-    AddOutputFilterByType DEFLATE application/rss+xml
-    AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE application/x-javascript
-    AddOutputFilterByType DEFLATE application/json
-</IfModule>
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
 
-# Browser caching
-<IfModule mod_expires.c>
-    ExpiresActive on
-    ExpiresByType text/css "access plus 1 year"
-    ExpiresByType application/javascript "access plus 1 year"
-    ExpiresByType image/png "access plus 1 year"
-    ExpiresByType image/jpg "access plus 1 year"
-    ExpiresByType image/jpeg "access plus 1 year"
-    ExpiresByType image/gif "access plus 1 year"
-    ExpiresByType image/svg+xml "access plus 1 year"
-    ExpiresByType image/webp "access plus 1 year"
-    ExpiresByType text/html "access plus 0 seconds"
-    ExpiresByType application/xml "access plus 0 seconds"
-    ExpiresByType text/xml "access plus 0 seconds"
-</IfModule>
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
 
-# Security headers
-<IfModule mod_headers.c>
-    Header always set X-Frame-Options "DENY"
-    Header always set X-Content-Type-Options "nosniff"
-    Header always set X-XSS-Protection "1; mode=block"
-    Header always set Referrer-Policy "strict-origin-when-cross-origin"
-    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
-</IfModule>
+/*.json
+  Cache-Control: public, max-age=31536000, immutable
 
-# Redirect to HTTPS
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{HTTPS} off
-    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-</IfModule>
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
 
-# Custom error pages
-ErrorDocument 404 /index.html
-ErrorDocument 500 /index.html
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
 
-# Remove server signature
-ServerSignature Off
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
 
-# Prevent access to sensitive files
-<Files ".htaccess">
-    Order allow,deny
-    Deny from all
-</Files>
+/*.gif
+  Cache-Control: public, max-age=31536000, immutable
 
-<Files "*.log">
-    Order allow,deny
-    Deny from all
-</Files>
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
