@@ -1,24 +1,17 @@
-<<<<<<< HEAD
 # Robots.txt for Video & Audio Converter
 # https://video-audio-converter.netlify.app/
 
 # Allow all search engines to crawl the site
-=======
->>>>>>> 27724d15919d71f4c082288d11583921bf048e6b
 User-agent: *
 Allow: /
 
 # Sitemap location
-<<<<<<< HEAD
 Sitemap: https://video-audio-converter.netlify.app/sitemap.xml
-=======
 Sitemap: /sitemap.xml
->>>>>>> 27724d15919d71f4c082288d11583921bf048e6b
 
 # Crawl delay (optional)
 Crawl-delay: 1
 
-<<<<<<< HEAD
 # Specific rules for major search engines
 User-agent: Googlebot
 Allow: /
@@ -45,7 +38,6 @@ Allow: /
 Crawl-delay: 2
 
 # Social media crawlers
-=======
 # Disallow specific paths if needed
 # Disallow: /admin/
 # Disallow: /private/
@@ -69,7 +61,6 @@ Allow: /
 User-agent: YandexBot
 Allow: /
 
->>>>>>> 27724d15919d71f4c082288d11583921bf048e6b
 User-agent: facebookexternalhit
 Allow: /
 
@@ -82,7 +73,6 @@ Allow: /
 User-agent: WhatsApp
 Allow: /
 
-<<<<<<< HEAD
 User-agent: TelegramBot
 Allow: /
 
@@ -100,6 +90,4 @@ Disallow: /
 # Disallow: /admin/
 # Disallow: /private/
 # Disallow: /temp/
-=======
 Sitemap: https://video-audio-converter.netlify.app/sitemap.xml
->>>>>>> 27724d15919d71f4c082288d11583921bf048e6b
