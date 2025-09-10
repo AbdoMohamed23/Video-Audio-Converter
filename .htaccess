@@ -50,7 +50,7 @@
 # Custom error pages
 ErrorDocument 404 /index.html
 ErrorDocument 500 /index.html
-=======
+
 # Remove server signature
 ServerSignature Off
 
