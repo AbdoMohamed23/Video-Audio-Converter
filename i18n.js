@@ -1,11 +1,18 @@
 const translations = {};
-let currentLang = "ar";
+let currentLang = localStorage.getItem('selectedLanguage') || "ar";
 
 async function loadLang(lang) {
-  const res = await fetch(`${lang}.json`);
-  const data = await res.json();
-  translations[lang] = data;
-  applyTranslations(lang);
+  try {
+    const res = await fetch(`${lang}.json`);
+    const data = await res.json();
+    translations[lang] = data;
+    window.translations = translations[lang]; // Make translations globally available
+    currentLang = lang;
+    localStorage.setItem('selectedLanguage', lang); // Save language preference
+    applyTranslations(lang);
+  } catch (error) {
+    console.error('Error loading language:', error);
+  }
 }
 
 function applyTranslations(lang) {
@@ -17,6 +24,8 @@ function applyTranslations(lang) {
       el.setAttribute("content", text);
     } else if (el.tagName === "TITLE") {
       el.innerText = text;
+    } else if (el.tagName === "A") {
+      el.textContent = text;
     } else {
       el.innerHTML = text;
     }
@@ -28,13 +37,32 @@ function applyTranslations(lang) {
   // تحديث نص الزر
   const switcher = document.getElementById("langSwitcher");
   if (switcher) {
-    switcher.innerText = (lang === "ar") ? "English" : "العربية";
+    switcher.innerHTML = (lang === "ar") ?
+      '<i class="fas fa-globe"></i> English' :
+      '<i class="fas fa-globe"></i> العربية';
   }
+
+  // Update page title
+  document.title = getTranslation('meta.title');
 }
 
-document.getElementById("langSwitcher").addEventListener("click", () => {
-  currentLang = (currentLang === "ar") ? "en" : "ar";
+// Initialize language switcher
+document.addEventListener('DOMContentLoaded', function () {
+  const switcher = document.getElementById("langSwitcher");
+  if (switcher) {
+    switcher.addEventListener("click", () => {
+      currentLang = (currentLang === "ar") ? "en" : "ar";
+      loadLang(currentLang);
+    });
+  }
+
+  // Load initial language from localStorage or default to Arabic
   loadLang(currentLang);
 });
 
-window.onload = () => loadLang(currentLang);
+// Fallback for window.onload
+window.onload = () => {
+  if (!document.querySelectorAll("[data-i18n]").length) {
+    loadLang(currentLang);
+  }
+};

@@ -1,10 +1,10 @@
 // PayPal Configuration
 const PAYPAL_CONFIG = {
     // For production, replace with your actual PayPal client ID
-    CLIENT_ID: 'sb', // Sandbox client ID for testing
+    CLIENT_ID: 'AYPhrqios8rmVlB4AKCKJHZvuC9Y7RGeMzOB-Iw0cTmLqD0VNAVHZ7QQ1QvOrhbzTJ1HCQ8WcGtXIuDg', // Sandbox client ID for testing
     CURRENCY: 'USD',
     ENVIRONMENT: 'sandbox', // Change to 'production' for live site
-    
+
     // PayPal account for receiving payments
     BUSINESS_EMAIL: 'abdomohamed0139@gmail.com'
 };
@@ -22,32 +22,32 @@ const PAYPAL_BUTTON_STYLE = {
 const PAYMENT_PACKAGES = {
     basic: {
         name: 'الباقة الأساسية',
-        price: 5.00,
-        description: 'تحويل حتى 10 ملفات - حجم الملف حتى 100 ميجا',
+        price: 2.99,
+        description: 'تحويل حتى 5 ملفات - حجم الملف حتى 50 ميجا',
         features: [
-            'تحويل حتى 10 ملفات',
-            'حجم الملف حتى 100 ميجا',
+            'تحويل حتى 5 ملفات',
+            'حجم الملف حتى 50 ميجا',
             'دعم فني أساسي'
         ]
     },
     premium: {
         name: 'الباقة المتقدمة',
-        price: 15.00,
-        description: 'تحويل حتى 50 ملف - حجم الملف حتى 500 ميجا',
+        price: 4.99,
+        description: 'تحويل حتى 20 ملف - حجم الملف حتى 200 ميجا',
         features: [
-            'تحويل حتى 50 ملف',
-            'حجم الملف حتى 500 ميجا',
+            'تحويل حتى 20 ملف',
+            'حجم الملف حتى 200 ميجا',
             'دعم فني متقدم',
             'أولوية في التحويل'
         ]
     },
     professional: {
         name: 'الباقة الاحترافية',
-        price: 30.00,
-        description: 'تحويل غير محدود - حجم الملف حتى 2 جيجا',
+        price: 7.99,
+        description: 'تحويل حتى 100 ملف - حجم الملف حتى 1 جيجا',
         features: [
-            'تحويل غير محدود',
-            'حجم الملف حتى 2 جيجا',
+            'تحويل حتى 100 ملف',
+            'حجم الملف حتى 1 جيجا',
             'دعم فني 24/7',
             'ميزات متقدمة'
         ]
@@ -59,23 +59,23 @@ function calculateConversionPrice(files) {
     const fileCount = files.length;
     const totalSize = files.reduce((sum, file) => sum + file.size, 0);
     const sizeInMB = totalSize / (1024 * 1024);
-    
-    let price = 2; // Base price $2
-    
-    // Price per file (50 cents per file)
-    price += fileCount * 0.5;
-    
-    // Price per 100MB ($1 per 100MB)
-    price += Math.ceil(sizeInMB / 100) * 1;
-    
-    // Minimum price is $2
-    return Math.max(price, 2);
+
+    let price = 0.99; // Base price $0.99
+
+    // Price per file (25 cents per file)
+    price += fileCount * 0.25;
+
+    // Price per 50MB (50 cents per 50MB)
+    price += Math.ceil(sizeInMB / 50) * 0.5;
+
+    // Minimum price is $0.99, maximum is $9.99
+    return Math.min(Math.max(price, 0.99), 9.99);
 }
 
 // PayPal order creation
 function createPayPalOrder(packageType, customPrice = null) {
     let orderData;
-    
+
     if (packageType === 'conversion' && customPrice) {
         orderData = {
             purchase_units: [{
@@ -100,17 +100,17 @@ function createPayPalOrder(packageType, customPrice = null) {
     } else {
         throw new Error('Invalid package type');
     }
-    
+
     return orderData;
 }
 
 // PayPal success handler
 function handlePayPalSuccess(details, packageType) {
     console.log('Payment successful:', details);
-    
+
     // Show success message
     showSuccessMessage(details.payer.name.given_name);
-    
+
     // Handle different package types
     if (packageType === 'conversion') {
         // Start file download process
@@ -139,14 +139,14 @@ function showSuccessMessage(payerName) {
             z-index: 10000;
         ">
             <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745; margin-bottom: 1rem;"></i>
-            <h2 style="color: #333; margin-bottom: 1rem;">تم الدفع بنجاح!</h2>
-            <p style="color: #666;">شكراً لك ${payerName || ''} على استخدام خدمتنا</p>
-            <p style="color: #666;">سيتم تحميل ملفاتك قريباً...</p>
+            <h2 style="color: #333; margin-bottom: 1rem;">${getTranslation('payment.success')}</h2>
+            <p style="color: #666;">${getTranslation('payment.success_message')} ${payerName || ''}</p>
+            <p style="color: #666;">${getTranslation('payment.download_soon')}</p>
         </div>
     `;
-    
+
     document.body.insertAdjacentHTML('beforeend', successHTML);
-    
+
     // Remove success message after 5 seconds
     setTimeout(() => {
         const successMsg = document.querySelector('.success-message');
@@ -166,10 +166,10 @@ function handlePackagePurchase(packageType, paymentDetails) {
         timestamp: new Date().toISOString(),
         status: 'completed'
     };
-    
+
     // Store in localStorage for demo purposes
     localStorage.setItem('userPackage', JSON.stringify(purchaseData));
-    
+
     // Update UI to show purchased package
     updateUIForPurchasedPackage(packageType);
 }
@@ -178,11 +178,11 @@ function handlePackagePurchase(packageType, paymentDetails) {
 function updateUIForPurchasedPackage(packageType) {
     const packageCard = document.querySelector(`[data-package="${packageType}"]`).closest('.pricing-card');
     const buyButton = packageCard.querySelector('.buy-btn');
-    
+
     buyButton.textContent = 'تم الشراء ✓';
     buyButton.style.background = '#28a745';
     buyButton.disabled = true;
-    
+
     packageCard.style.border = '3px solid #28a745';
 }
 
@@ -199,7 +199,7 @@ function checkExistingPurchases() {
 function initializePayPalConfig() {
     // Check for existing purchases
     checkExistingPurchases();
-    
+
     // Add any additional initialization here
     console.log('PayPal configuration initialized');
 }

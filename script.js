@@ -4,6 +4,16 @@ let selectedFormat = '';
 let selectedPackage = null;
 let selectedPrice = 0;
 
+// Translation helper function
+function getTranslation(key) {
+    const keys = key.split('.');
+    let translation = window.translations || {};
+    keys.forEach(k => {
+        translation = translation[k];
+    });
+    return translation || key;
+}
+
 // DOM elements
 const uploadArea = document.getElementById('uploadArea');
 const fileInput = document.getElementById('fileInput');
@@ -13,14 +23,18 @@ const progressSection = document.getElementById('progressSection');
 const progressFill = document.getElementById('progressFill');
 const progressText = document.getElementById('progressText');
 const buyButtons = document.querySelectorAll('.buy-btn');
-const paymentModal = document.getElementById('paymentModal');
-const closeModal = document.querySelector('.close');
+let paymentModal = null;
+let closeModal = null;
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize modal elements
+    paymentModal = document.getElementById('paymentModal');
+    closeModal = document.querySelector('.close');
+
     initializeEventListeners();
     initializePayPal();
-    
+
     // Initialize PayPal configuration if available
     if (typeof initializePayPalConfig === 'function') {
         initializePayPalConfig();
@@ -44,15 +58,19 @@ function initializeEventListeners() {
 
     // Buy button events
     buyButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
             selectedPackage = btn.dataset.package;
             selectedPrice = parseFloat(btn.dataset.price);
+            console.log('Selected package:', selectedPackage, 'Price:', selectedPrice);
             showPaymentModal();
         });
     });
 
     // Modal events
-    closeModal.addEventListener('click', hidePaymentModal);
+    if (closeModal) {
+        closeModal.addEventListener('click', hidePaymentModal);
+    }
     window.addEventListener('click', (e) => {
         if (e.target === paymentModal) {
             hidePaymentModal();
@@ -70,7 +88,7 @@ function handleDrop(e) {
     e.preventDefault();
     uploadArea.style.borderColor = '#667eea';
     uploadArea.style.background = '';
-    
+
     const files = Array.from(e.dataTransfer.files);
     processFiles(files);
 }
@@ -87,7 +105,7 @@ function processFiles(files) {
     });
 
     if (validFiles.length === 0) {
-        alert('يرجى اختيار ملفات فيديو أو صوت صالحة');
+        alert(getTranslation('messages.select_files'));
         return;
     }
 
@@ -103,23 +121,27 @@ function updateUploadArea() {
 
     uploadArea.innerHTML = `
         <i class="fas fa-check-circle" style="color: #28a745;"></i>
-        <h3>تم اختيار ${fileCount} ملف</h3>
-        <p>الحجم الإجمالي: ${sizeInMB} ميجابايت</p>
+        <h3>${fileCount} ${getTranslation('messages.files_selected')}</h3>
+        <p>${getTranslation('messages.total_size')}: ${sizeInMB} MB</p>
         <input type="file" id="fileInput" accept="video/*,audio/*" multiple>
     `;
 
-    // Re-attach event listener to new file input
+    // Re-attach event listener to new file input only
     const newFileInput = document.getElementById('fileInput');
-    newFileInput.addEventListener('change', handleFileSelect);
+    if (newFileInput) {
+        newFileInput.addEventListener('change', handleFileSelect);
+    }
+
+    // Don't re-attach click event to upload area - it's already attached in initializeEventListeners
 }
 
 function selectFormat(format, button) {
     // Remove active class from all buttons
     formatButtons.forEach(btn => btn.classList.remove('active'));
-    
+
     // Add active class to selected button
     button.classList.add('active');
-    
+
     selectedFormat = format;
     checkConvertButton();
 }
@@ -130,14 +152,16 @@ function checkConvertButton() {
 
 function startConversion() {
     if (selectedFiles.length === 0 || !selectedFormat) {
-        alert('يرجى اختيار الملفات وصيغة التحويل');
+        alert(getTranslation('messages.select_format'));
         return;
     }
+
+    console.log('Starting conversion:', selectedFiles.length, 'files to', selectedFormat);
 
     // Show progress section
     progressSection.style.display = 'block';
     convertBtn.disabled = true;
-    convertBtn.textContent = 'جاري التحويل...';
+    convertBtn.textContent = getTranslation('messages.converting_progress');
 
     // Simulate conversion progress
     simulateConversion();
@@ -152,21 +176,22 @@ function simulateConversion() {
             clearInterval(interval);
             completeConversion();
         }
-        
+
         progressFill.style.width = progress + '%';
-        progressText.textContent = `جاري التحويل... ${Math.round(progress)}%`;
+        progressText.textContent = `${getTranslation('messages.converting_progress')} ${Math.round(progress)}%`;
     }, 500);
 }
 
 function completeConversion() {
-    progressText.textContent = 'تم التحويل بنجاح! يرجى الدفع لتحميل الملفات';
-    convertBtn.textContent = 'ادفع لتحميل الملفات';
+    progressText.textContent = getTranslation('messages.conversion_success');
+    convertBtn.textContent = getTranslation('messages.pay_download');
     convertBtn.disabled = false;
-    
+
     // Change convert button to payment button
     convertBtn.onclick = () => {
         selectedPackage = 'conversion';
         selectedPrice = calculateConversionPriceLocal();
+        console.log('Conversion payment - Package:', selectedPackage, 'Price:', selectedPrice);
         showPaymentModal();
     };
 }
@@ -177,18 +202,53 @@ function calculateConversionPriceLocal() {
 }
 
 function showPaymentModal() {
+    if (!paymentModal) return;
+
+    // Update modal content based on selected package
+    updateModalContent();
+
     paymentModal.style.display = 'block';
-    
+
     // Clear previous PayPal buttons
     const container = document.getElementById('paypal-button-container');
-    container.innerHTML = '';
-    
-    // Render new PayPal button
-    renderPayPalButton();
+    if (container) {
+        container.innerHTML = '';
+
+        // Render new PayPal button
+        renderPayPalButton();
+    }
 }
 
 function hidePaymentModal() {
-    paymentModal.style.display = 'none';
+    if (paymentModal) {
+        paymentModal.style.display = 'none';
+    }
+}
+
+function updateModalContent() {
+    const packageName = document.getElementById('packageName');
+    const packageDescription = document.getElementById('packageDescription');
+    const packagePrice = document.getElementById('packagePrice');
+
+    if (!packageName || !packageDescription || !packagePrice) {
+        console.error('Modal content elements not found');
+        return;
+    }
+
+    if (selectedPackage === 'conversion') {
+        packageName.textContent = getTranslation('payment.converting');
+        packageDescription.textContent = `${getTranslation('messages.files_selected')} ${selectedFiles.length} ${getTranslation('messages.files_selected')} ${getTranslation('messages.total_size')} ${selectedFormat}`;
+        packagePrice.textContent = `$${selectedPrice.toFixed(2)}`;
+    } else if (PAYMENT_PACKAGES && PAYMENT_PACKAGES[selectedPackage]) {
+        const package = PAYMENT_PACKAGES[selectedPackage];
+        packageName.textContent = package.name;
+        packageDescription.textContent = package.description;
+        packagePrice.textContent = `$${package.price.toFixed(2)}`;
+    } else {
+        packageName.textContent = getTranslation('payment.converting');
+        packageDescription.textContent = getTranslation('payment.converting');
+        packagePrice.textContent = `$${selectedPrice.toFixed(2)}`;
+    }
 }
 
 function initializePayPal() {
@@ -196,86 +256,131 @@ function initializePayPal() {
 }
 
 function renderPayPalButton() {
+    const container = document.getElementById('paypal-button-container');
+    if (!container) return;
+
     if (typeof paypal === 'undefined') {
         console.error('PayPal SDK not loaded');
-        document.getElementById('paypal-button-container').innerHTML = 
-            '<p style="color: red;">خطأ في تحميل PayPal. يرجى المحاولة لاحقاً.</p>';
+        container.innerHTML = '<p style="color: red;">خطأ في تحميل PayPal. يرجى المحاولة لاحقاً.</p>';
         return;
     }
 
     paypal.Buttons({
         style: PAYPAL_BUTTON_STYLE,
-        
-        createOrder: function(data, actions) {
+
+        createOrder: function (data, actions) {
             try {
+                console.log('Creating PayPal order for package:', selectedPackage, 'price:', selectedPrice);
                 const orderData = createPayPalOrder(selectedPackage, selectedPrice);
+                console.log('Order data:', orderData);
                 return actions.order.create(orderData);
             } catch (error) {
                 console.error('Error creating PayPal order:', error);
-                alert('حدث خطأ في إنشاء الطلب. يرجى المحاولة مرة أخرى.');
+                alert(getTranslation('payment.order_error'));
                 return null;
             }
         },
-        
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
+
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
                 handlePayPalSuccess(details, selectedPackage);
                 hidePaymentModal();
             });
         },
-        
-        onError: function(err) {
+
+        onError: function (err) {
             console.error('PayPal Error:', err);
-            alert('حدث خطأ في عملية الدفع. يرجى المحاولة مرة أخرى.');
+            alert(getTranslation('payment.error'));
         },
-        
-        onCancel: function(data) {
+
+        onCancel: function (data) {
             console.log('Payment cancelled:', data);
-            alert('تم إلغاء عملية الدفع.');
+            alert(getTranslation('payment.cancel'));
         }
     }).render('#paypal-button-container');
 }
 
 function downloadConvertedFiles() {
+    if (!selectedFiles || selectedFiles.length === 0) {
+        alert(getTranslation('messages.no_files'));
+        return;
+    }
+
+    console.log('Starting download of', selectedFiles.length, 'files');
+
     // Simulate file download
     selectedFiles.forEach((file, index) => {
         setTimeout(() => {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(file);
-            link.download = `converted_${index + 1}.${selectedFormat}`;
-            link.click();
+            try {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(file);
+                link.download = `converted_${index + 1}.${selectedFormat}`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                console.log(`Downloaded file ${index + 1}`);
+            } catch (error) {
+                console.error('Error downloading file:', error);
+            }
         }, index * 1000);
     });
-    
-    // Reset the form
-    resetForm();
+
+    // Show success message
+    alert(getTranslation('messages.download_starting'));
+
+    // Reset the form after downloads
+    setTimeout(() => {
+        resetForm();
+    }, selectedFiles.length * 1000 + 2000);
 }
 
 function resetForm() {
+    console.log('Resetting form');
+
     selectedFiles = [];
     selectedFormat = '';
     selectedPackage = null;
     selectedPrice = 0;
-    
+
     // Reset UI
-    uploadArea.innerHTML = `
-        <i class="fas fa-cloud-upload-alt"></i>
-        <h3>اسحب ملفاتك هنا أو انقر للاختيار</h3>
-        <p>يدعم جميع صيغ الفيديو والصوت</p>
-        <input type="file" id="fileInput" accept="video/*,audio/*" multiple>
-    `;
-    
+    if (uploadArea) {
+        uploadArea.innerHTML = `
+            <i class="fas fa-cloud-upload-alt"></i>
+            <h3 data-i18n="upload.title">اسحب ملفاتك هنا أو انقر للاختيار</h3>
+            <p data-i18n="upload.subtitle">يدعم جميع صيغ الفيديو والصوت</p>
+            <input type="file" id="fileInput" accept="video/*,audio/*" multiple>
+        `;
+
+        // Re-apply translations
+        if (typeof applyTranslations === 'function') {
+            applyTranslations(document.documentElement.lang || 'ar');
+        }
+    }
+
     formatButtons.forEach(btn => btn.classList.remove('active'));
-    progressSection.style.display = 'none';
-    progressFill.style.width = '0%';
-    convertBtn.textContent = 'ابدأ التحويل';
-    convertBtn.disabled = true;
-    convertBtn.onclick = startConversion;
-    
+
+    if (progressSection) {
+        progressSection.style.display = 'none';
+    }
+
+    if (progressFill) {
+        progressFill.style.width = '0%';
+    }
+
+    if (convertBtn) {
+        convertBtn.textContent = getTranslation('upload.start');
+        convertBtn.disabled = true;
+        convertBtn.onclick = startConversion;
+    }
+
     // Re-attach event listeners
     const newFileInput = document.getElementById('fileInput');
-    newFileInput.addEventListener('change', handleFileSelect);
-    document.getElementById('uploadArea').addEventListener('click', () => newFileInput.click());
+    if (newFileInput) {
+        newFileInput.addEventListener('change', handleFileSelect);
+    }
+
+    // Don't re-attach click event to upload area - it's already attached in initializeEventListeners
 }
 
 // Utility functions

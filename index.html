@@ -77,8 +77,6 @@
                 <button class="btn" id="langSwitcher">English</button>
             </div>
             <p data-i18n="header.subtitle">حوّل ملفاتك بسهولة وسرعة</p>
-
-            <!-- Language Switcher -->
         </div>
     </header>
 
@@ -140,43 +138,66 @@
                 <div class="pricing-grid">
                     <div class="pricing-card">
                         <h3 data-i18n="pricing.basic.title">الباقة الأساسية</h3>
-                        <div class="price">$5</div>
+                        <div class="price">$2.99</div>
                         <ul>
-                            <li data-i18n="pricing.basic.li1">تحويل حتى 10 ملفات</li>
-                            <li data-i18n="pricing.basic.li2">حجم الملف حتى 100 ميجا</li>
+                            <li data-i18n="pricing.basic.li1">تحويل حتى 5 ملفات</li>
+                            <li data-i18n="pricing.basic.li2">حجم الملف حتى 50 ميجا</li>
                             <li data-i18n="pricing.basic.li3">دعم فني أساسي</li>
                         </ul>
-                        <button class="buy-btn" data-price="5" data-package="basic" data-i18n="pricing.buy">اشتري
+                        <button class="buy-btn" data-price="2.99" data-package="basic" data-i18n="pricing.buy">اشتري
                             الآن</button>
                     </div>
                     <div class="pricing-card featured">
                         <h3 data-i18n="pricing.premium.title">الباقة المتقدمة</h3>
-                        <div class="price">$15</div>
+                        <div class="price">$4.99</div>
                         <ul>
-                            <li data-i18n="pricing.premium.li1">تحويل حتى 50 ملف</li>
-                            <li data-i18n="pricing.premium.li2">حجم الملف حتى 500 ميجا</li>
+                            <li data-i18n="pricing.premium.li1">تحويل حتى 20 ملف</li>
+                            <li data-i18n="pricing.premium.li2">حجم الملف حتى 200 ميجا</li>
                             <li data-i18n="pricing.premium.li3">دعم فني متقدم</li>
                             <li data-i18n="pricing.premium.li4">أولوية في التحويل</li>
                         </ul>
-                        <button class="buy-btn" data-price="15" data-package="premium" data-i18n="pricing.buy">اشتري
+                        <button class="buy-btn" data-price="4.99" data-package="premium" data-i18n="pricing.buy">اشتري
                             الآن</button>
                     </div>
                     <div class="pricing-card">
                         <h3 data-i18n="pricing.pro.title">الباقة الاحترافية</h3>
-                        <div class="price">$30</div>
+                        <div class="price">$7.99</div>
                         <ul>
-                            <li data-i18n="pricing.pro.li1">تحويل غير محدود</li>
-                            <li data-i18n="pricing.pro.li2">حجم الملف حتى 2 جيجا</li>
+                            <li data-i18n="pricing.pro.li1">تحويل حتى 100 ملف</li>
+                            <li data-i18n="pricing.pro.li2">حجم الملف حتى 1 جيجا</li>
                             <li data-i18n="pricing.pro.li3">دعم فني 24/7</li>
                             <li data-i18n="pricing.pro.li4">ميزات متقدمة</li>
                         </ul>
-                        <button class="buy-btn" data-price="30" data-package="professional"
+                        <button class="buy-btn" data-price="7.99" data-package="professional"
                             data-i18n="pricing.buy">اشتري الآن</button>
                     </div>
                 </div>
             </section>
         </div>
     </main>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="payment.title">إتمام عملية الدفع</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="payment-info">
+                    <h3 id="packageName">الباقة المختارة</h3>
+                    <p id="packageDescription">وصف الباقة</p>
+                    <div class="price-display">
+                        <span id="packagePrice">$0</span>
+                    </div>
+                </div>
+                <div class="payment-methods">
+                    <h4 data-i18n="payment.methods">طرق الدفع المتاحة</h4>
+                    <div id="paypal-button-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="container">
@@ -191,9 +212,9 @@
                 <div class="footer-links">
                     <h3 data-i18n="footer.links">روابط مهمة</h3>
                     <ul>
-                        <li><a href="#privacy" data-i18n="footer.privacy">سياسة الخصوصية</a></li>
-                        <li><a href="#terms" data-i18n="footer.terms">شروط الاستخدام</a></li>
-                        <li><a href="#support" data-i18n="footer.support">الدعم الفني</a></li>
+                        <li><a href="privacy.html" data-i18n="footer.privacy">سياسة الخصوصية</a></li>
+                        <li><a href="terms.html" data-i18n="footer.terms">شروط الاستخدام</a></li>
+                        <li><a href="support.html" data-i18n="footer.support">الدعم الفني</a></li>
                     </ul>
                 </div>
             </div>
@@ -205,6 +226,10 @@
 
     <script src="i18n.js"></script>
     <script src="script.js"></script>
+    <!-- PayPal SDK -->
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AYPhrqios8rmVlB4AKCKJHZvuC9Y7RGeMzOB-Iw0cTmLqD0VNAVHZ7QQ1QvOrhbzTJ1HCQ8WcGtXIuDg&currency=USD"></script>
+    <script src="paypal-config.js"></script>
 </body>
 
 </html>
