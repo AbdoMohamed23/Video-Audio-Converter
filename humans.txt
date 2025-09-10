@@ -1,0 +1,31 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Developer: Abdelrahman Mohamed
+    Contact: abdomohamed0139@gmail.com
+    From: Egypt
+
+# THANKS
+
+    Fonts: Google Fonts (Inter)
+    Icons: Font Awesome
+    Hosting: Netlify
+    Analytics: Google Analytics
+
+# TECHNOLOGY COLOPHON
+
+    Languages: HTML5, CSS3, JavaScript (ES6+)
+    Frameworks: Vanilla JavaScript
+    Tools: Netlify, PayPal SDK
+    Standards: W3C, Schema.org
+    Accessibility: WCAG 2.1 AA
+    Performance: Lighthouse 100/100
+
+# SITE
+
+    Last update: 2024/12/27
+    Language: Arabic (ar), English (en)
+    Doctype: HTML5
+    IDE: Cursor AI

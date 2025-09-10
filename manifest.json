@@ -1,0 +1,33 @@
+{
+    "name": "محول الفيديو والصوت",
+    "short_name": "محول الفيديو",
+    "description": "حوّل ملفات الفيديو والصوت إلى جميع الصيغ بسهولة وسرعة مع الحفاظ على الجودة",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#3b82f6",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "cover.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "multimedia",
+        "productivity",
+        "utilities"
+    ],
+    "lang": "ar",
+    "dir": "rtl",
+    "scope": "/",
+    "prefer_related_applications": false
+}
